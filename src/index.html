@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Assessment DApp</title>
+  </head>
+  <body>
+    <h1 class="text-center">Legal Fees Assessment DApp</h1>
+    <hr/>
+
+    <div style="text-align: center;">
+      <h3>Today's assessment</h3>
+      <h4>||Lawyer 1 (ID) <span id="lawyer1"></span> <span>||</span> </h4>
+        <p><h4>||Lawyer 2 (ID) <span style="color: red" id="lawyer2"></span>||</span> </h4></p>
+
+
+      <button id="registerToAssess" onclick="registerAsSecondlawyer()">REGISTER TO ASSESS - SECOND OPINION</button>
+
+    </div>
+
+    <div>
+      <ul id="eventsList">
+        <!-- Events will appear here from app.js -->
+      </ul>
+    </div>
+
+
+    <!-- JQuery will help us extract data from json files -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Web3.js will help us interact with the deployed smart contract -->
+    <script src="JShelpers/web3.min.js"></script>
+    <!-- Truffle contract  will our life easier when interacting with smart contracts -->
+    <script src="JShelpers/truffle-contract.js"></script>
+    <!-- app.js is where we will write our JS logic -->
+    <script src="app.js"></script>
+  </body>
+</html>
