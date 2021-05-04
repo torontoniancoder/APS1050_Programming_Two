@@ -1,5 +1,5 @@
 var web3Provider = null;
-var SecondOpinionContract;
+var secondOpinion;
 const nullAddress = "0x0000000000000000000000000000000000000000";
 
 function init() {
@@ -42,13 +42,13 @@ function initWeb3() {
 }
 
 
-function initContract() {
-  $.getJSON('SecondOpinion.json', function(data) {
+function initContract () {
+  $.getJSON('secondOpinion.json', function(data) {
     // Get the necessary contract artifact file and instantiate it with truffle-contract
-    SecondOpinionContract = TruffleContract(data);
+    secondOpinion = TruffleContract(data);
 
     // Set the provider for our contract
-    SecondOpinionContract.setProvider(web3Provider);
+    secondOpinion.setProvider(web3Provider);
 
     // listen to the events emitted by our smart contract
     getEvents ();
@@ -59,8 +59,8 @@ function initContract() {
   });
 }
 
-function getEvents() {
-  SecondOpinionContract.deployed().then(function(instance) {
+function getEvents () {
+  secondOpinion.deployed().then(function(instance) {
   var events = instance.allEvents(function(error, log){
     if (!error)
       $("#eventsList").prepend('<li>' + log.event + '</li>'); // Using JQuery, we will add new events to a list in our index.html
@@ -71,8 +71,8 @@ function getEvents() {
 }
 
 function getFirstlawyerAddress() {
-  SecondOpinionContract.deployed().then(function(instance) {
-    return instance.lawyer1.call();
+  secondOpinion.deployed().then(function(instance) {
+    return instance.address();
   }).then(function(result) {
     $("#lawyer1").text(result); // Using JQuery again, we will modify the html tag with id lawyer1 with the returned text from our call on the instance of the wrestling contract we deployed
   }).catch(function(err) {
@@ -81,7 +81,7 @@ function getFirstlawyerAddress() {
 }
 
 function getSecondlawyerAddress() {
-  SecondOpinionContract.deployed().then(function(instance) {
+  secondOpinion.deployed().then(function(instance) {
     return instance.lawyer2.call();
   }).then(function(result) {
     if(result != nullAddress) {
@@ -96,7 +96,7 @@ function getSecondlawyerAddress() {
 }
 
 
-function registerAsSecondlawyer() {
+function registerAsSecondlawyer () {
   web3.eth.getAccounts(function(error, accounts) {
   if (error) {
     console.log(error);
@@ -104,7 +104,7 @@ function registerAsSecondlawyer() {
     if(accounts.length <= 0) {
       alert("No account is unlocked, please authorize an account on Metamask.")
     } else {
-      SecondOpinionContract.deployed().then(function(instance) {
+      secondOpinionContract.deployed().then(function(instance) {
         return instance.registerAsAnOpponent({from: accounts[0]});
       }).then(function(result) {
         console.log('Registered as an opponent')

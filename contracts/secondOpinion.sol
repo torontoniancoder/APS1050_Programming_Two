@@ -6,41 +6,66 @@ pragma solidity ^0.5.0;
     https://github.com/devzl/ethereum-walkthrough-1/blob/master/Wrestling.sol
     */
 
-contract secondOpinion {
-    /**
-    * Our lawyers
-    */
-	address public lawyer1;
-	address public lawyer2;
+contract SecondOpinion {
+    //struct Lawyer {
+    //    uint id; 
+    //    string name;
+    //    uint lawyersCount;
+    //}
 
-	bool public lawyer1assessed;
-	bool public lawyer2assessed;
+    address public lawyer1;
 
-	uint private lawyer1Assessment;
-	uint private lawyer2Assessment;
+    address public lawyer2;
 
-	bool public assessmentFinished;
+    bool public lawyer1assessed;
+
+    bool public lawyer2assessed;
+
+    uint private lawyer1Assessment;
+
+    uint private lawyer2Assessment;
+
+    bool public assessmentFinished;
+
     address public theWinner;
+
     uint gains;
+
+    //uint lawyersCount;
+    //
+    // Store Lawyers ID
+    //uint public id; // added for tracking the Lawyers ID
+
+    // Fetch Lawyers
+    //mapping(uint => Lawyer) public lawyers;
 
     /**
     * The logs that will be emitted in every step of the contract's life cycle
     */
-	event AssessmentStartsEvent(address lawyer1, address lawyer2);
-	event EndOfRoundEvent(uint lawyer1Assessment, uint lawyer2Assessment);
-	event assessmentFinishedEvent (address winner, uint gains);
+    event AssessmentStartsEvent(address lawyer1, address lawyer2);
+    event EndOfRoundEvent(uint lawyer1Assessment, uint lawyer2Assessment);
+    event AssessmentFinishedEvent (address winner, uint gains);
 
     /**
     * The contract constructor
     */
-	constructor() public {
-		lawyer1 = msg.sender;
-	}
+    constructor() SecondOpinion() public {
+        lawyer1 = msg.sender;
+        //addLawyer("John Doe");
+        //addLawyer("Jane Roe");
+        // addLawyer("Crypto Lawyer");
+    }
+
+    //function addLawyer (string memory _name) private {
+    //    lawyersCount ++;
+    //    lawyers[lawyersCount] = Lawyer(lawyersCount, _name, 0);
+        // lawyers[lawyersCount] = Lawyer(lawyersCount, _name);
+
 
     /**
     * A second lawyer can register as an opponent
     */
-	function registerAsAnOpponent() public {
+    function registerAsAnOpponent() public {
         require(lawyer2 == address(0));
 
         lawyer2 = msg.sender;
@@ -86,7 +111,7 @@ contract secondOpinion {
         theWinner = winner;
 
         gains = lawyer1Assessment + lawyer2Assessment;
-        emit assessmentFinishedEvent (winner, gains);
+        emit AssessmentFinishedEvent (winner, gains);
     }
 
     /**

@@ -1,5 +1,5 @@
-const Wrestling = artifacts.require("./secondOpinion.sol")
+const SecondOpinionContract = artifacts.require("SecondOpinion");
 
 module.exports = function(deployer) {
-	deployer.deploy(Wrestling);
+	deployer.deploy(SecondOpinionContract);
 };

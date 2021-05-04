@@ -1,5 +1,5 @@
 var web3Provider = null;
-var SecondOpinionContract;
+var secondOpinion;
 const nullAddress = "0x0000000000000000000000000000000000000000";
 
 function init() {
@@ -43,12 +43,13 @@ function initWeb3() {
 
 
 function initContract() {
-  $.getJSON('SecondOpinion.json', function(data) {
+  secondOpinion.deployed().then(function(instance) {
+  $.getJSON('secondOpinion.json', function(data) {
     // Get the necessary contract artifact file and instantiate it with truffle-contract
-    SecondOpinionContract = TruffleContract(data);
+    secondOpinion = TruffleContract(data);
 
     // Set the provider for our contract
-    SecondOpinionContract.setProvider(web3Provider);
+    secondOpinion.setProvider(web3Provider);
 
     // listen to the events emitted by our smart contract
     getEvents ();
@@ -60,7 +61,7 @@ function initContract() {
 }
 
 function getEvents() {
-  SecondOpinionContract.deployed().then(function(instance) {
+  secondOpinion.deployed().then(function(instance) {
   var events = instance.allEvents(function(error, log){
     if (!error)
       $("#eventsList").prepend('<li>' + log.event + '</li>'); // Using JQuery, we will add new events to a list in our index.html
@@ -71,7 +72,7 @@ function getEvents() {
 }
 
 function getFirstlawyerAddress() {
-  SecondOpinionContract.deployed().then(function(instance) {
+  secondOpinion.deployed().then(function(instance) {
     return instance.lawyer1.call();
   }).then(function(result) {
     $("#lawyer1").text(result); // Using JQuery again, we will modify the html tag with id lawyer1 with the returned text from our call on the instance of the wrestling contract we deployed
@@ -81,12 +82,12 @@ function getFirstlawyerAddress() {
 }
 
 function getSecondlawyerAddress() {
-  SecondOpinionContract.deployed().then(function(instance) {
+  secondOpinion.deployed().then(function(instance) {
     return instance.lawyer2.call();
   }).then(function(result) {
     if(result != nullAddress) {
       $("#lawyer2").text(result);
-      $("#registerToAssess").remove(); // By clicking on the button with the ID registerToAssess2, a user can register as second lawyer, so we need to remove the button if a second lawyer is set 
+      $("#register").remove(); // By clicking on the button with the ID registerToAssess2, a user can register as second lawyer, so we need to remove the button if a second lawyer is set 
     } else {
       $("#lawyer2").text("Undecided, you can register to assess the request for legal help!");
     }   
@@ -104,7 +105,7 @@ function registerAsSecondlawyer() {
     if(accounts.length <= 0) {
       alert("No account is unlocked, please authorize an account on Metamask.")
     } else {
-      SecondOpinionContract.deployed().then(function(instance) {
+      secondOpinion.deployed().then(function(instance) {
         return instance.registerAsAnOpponent({from: accounts[0]});
       }).then(function(result) {
         console.log('Registered as an opponent')
